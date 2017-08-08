@@ -85,11 +85,12 @@ class PackingSlip(Document):
 		"""
 
 		# also pick custom fields from delivery note
+		for d in frappe.get_meta("Delivery Note Item").get_custom_fields():
+			print "\nd"
 		rows = [d.item_code for d in self.get("items")]
 
 		custom_fields = ', '.join(['dni.`{0}`'.format(d.fieldname) for d in \
-			frappe.get_meta("Delivery Note Item").get_custom_fields()])
-
+			frappe.get_meta("Delivery Note Item").get_custom_fields() if d.fieldtype not in ['Section Break', 'Column Break']])
 		if custom_fields:
 			custom_fields = ', ' + custom_fields
 
